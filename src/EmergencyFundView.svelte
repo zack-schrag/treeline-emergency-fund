@@ -793,6 +793,11 @@ ORDER BY month DESC`;
   let statusIcon = $derived(
     runwayData?.status === "on-track" ? "✓" : runwayData?.status === "warning" ? "⚠" : "⚡"
   );
+  let runwayChange = $derived.by(() => {
+    if (!runwayData || snapshots.length === 0) return null;
+    const lastSnapshot = snapshots[0]; // snapshots are ordered by date DESC
+    return runwayData.monthsOfRunway - lastSnapshot.months_of_runway;
+  });
 </script>
 
 <div
@@ -1009,6 +1014,12 @@ ORDER BY month DESC`;
             <span class="status-icon">{statusIcon}</span>
             {runwayData.monthsOfRunway.toFixed(1)} months
           </span>
+          {#if runwayChange !== null}
+            <span class="hero-sub change-indicator" class:positive={runwayChange > 0} class:negative={runwayChange < 0}>
+              {runwayChange > 0 ? '▲' : runwayChange < 0 ? '▼' : '–'}
+              {Math.abs(runwayChange).toFixed(1)} mo from last
+            </span>
+          {/if}
         </div>
         <div class="hero-card">
           <span class="hero-label">Current Fund</span>
@@ -1769,6 +1780,18 @@ ORDER BY month DESC`;
   .hero-sub {
     font-size: 11px;
     color: var(--text-muted);
+  }
+
+  .change-indicator {
+    font-family: var(--font-mono);
+  }
+
+  .change-indicator.positive {
+    color: var(--accent-success);
+  }
+
+  .change-indicator.negative {
+    color: var(--accent-danger);
   }
 
   .status-icon {
