@@ -24,7 +24,7 @@ export const plugin: Plugin = {
     context.registerView({
       id: "emergency-fund",
       name: "Emergency Fund",
-      icon: "🛡️",
+      icon: "shield",
       mount: (target: HTMLElement, props: Record<string, any>) => {
         const instance = mount(EmergencyFundView, {
           target,
@@ -42,7 +42,7 @@ export const plugin: Plugin = {
       sectionId: "main",
       id: "emergency-fund",
       label: "Emergency Fund",
-      icon: "🛡️",
+      icon: "shield",
       viewId: "emergency-fund",
     });
 
